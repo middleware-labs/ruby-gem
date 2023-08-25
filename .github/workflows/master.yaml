@@ -43,8 +43,8 @@ jobs:
         id: version_check
         run: |
           # Extract the old and new versions from the commit
-          OLD_VERSION=$(git show HEAD^:path/to/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-          NEW_VERSION=$(git show HEAD:path/to/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          OLD_VERSION=$(git show HEAD^:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           
           if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
             echo "Version changed from $OLD_VERSION to $NEW_VERSION"

@@ -5,13 +5,15 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'middleware_rubygem'
+gem 'middleware_apm'
 ```
 
 And then execute:
-
-    $ bundle install
+```bash
+bundle install
+```
 
 Or install it yourself as:
-
-    $ gem install middleware_rubygem
+```bash
+gem install middleware_apm
+```

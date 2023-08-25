@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - update-master-workflow
 
 jobs:
   release_version:
@@ -28,30 +27,16 @@ jobs:
         run: |
           gem build middleware_rubygem.gemspec
 
-      - name: Check for Version Change
-        id: version_check
+      - name: Get the new Version
+        id: get_new_version
         run: |
-          # Extract the old and new versions from the commit
-          LATEST_TAG=$(git fetch && git describe --abbrev=0 --tags)
-          OLD_VERSION=$(git show $LATEST_TAG:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          # Extract the new version from the commit
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-
-          echo "Test tag : $LATEST_TAG"
-          echo "Test old : $OLD_VERSION"
-          echo "Test new : $NEW_VERSION"
-          
-          if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
-            echo "Version changed from $OLD_VERSION to $NEW_VERSION"
-            echo "::set-output name=version_changed::true"
-            echo "::set-output name=version::$NEW_VERSION"
-          else
-            echo "Version remains unchanged"
-            echo "::set-output name=version_changed::false"
-          fi
+          echo "::set-output name=version::$NEW_VERSION"
 
       - name: Publish Gem Package
         env:
-          GEM_HOST_API_KEY: ${{ secrets.DP_RUBY_GEM_API_KEY }}
+          GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
@@ -66,9 +51,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version_check.outputs.version }}
-          release_name: Release ${{ steps.version_check.outputs.version }}
+          tag_name: v${{ steps.get_new_version.outputs.version }}
+          release_name: Release ${{ steps.get_new_version.outputs.version }}
           body: |
-            Release ${{ steps.version_check.outputs.version }}
+            Release ${{ steps.get_new_version.outputs.version }}
           draft: false
           prerelease: false

@@ -3,7 +3,7 @@
 require_relative "lib/middleware/ruby_gem/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "middleware_apm"
+  spec.name          = "middleware_apm_dp"
   spec.version       = Middleware::RubyGem::VERSION
   spec.authors       = ["middleware-dev"]
   spec.email         = ["dev@middleware.io"]

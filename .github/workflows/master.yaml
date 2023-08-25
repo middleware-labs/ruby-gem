@@ -32,7 +32,7 @@ jobs:
         id: version_check
         run: |
           # Extract the old and new versions from the commit
-          LATEST_TAG=$(git describe --abbrev=0 --tags)
+          LATEST_TAG=$(git fetch && git describe --abbrev=0 --tags)
           OLD_VERSION=$(git show $LATEST_TAG:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
 

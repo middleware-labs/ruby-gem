@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - github-workflow
 
 jobs:
   release_version:
@@ -47,7 +46,7 @@ jobs:
       - name: Publish Gem Package
         if: steps.version_check.outputs.version_changed == 'true'
         env:
-          GEM_HOST_API_KEY: ${{ secrets.DP_RUBY_GEM_API_KEY }}
+          GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
@@ -65,5 +64,7 @@ jobs:
         with:
           tag_name: v${{ steps.version_check.outputs.version }}
           release_name: Release ${{ steps.version_check.outputs.version }}
+          body: |
+            Release ${{ steps.version_check.outputs.version }}
           draft: false
           prerelease: false

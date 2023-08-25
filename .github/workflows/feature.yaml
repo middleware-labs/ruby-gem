@@ -1,0 +1,44 @@
+name: Release Gem Package
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+
+jobs:
+  release_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install Dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build Gem Package
+        run: |
+          gem build middleware_rubygem.gemspec
+
+      - name: Check for Version Change
+        id: version_check
+        run: |
+          # Get the latest version from the main branch
+          LATEST_VERSION=$(git show origin/main:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          
+          # Get the current version from the current commit
+          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          
+          if [ "$LATEST_VERSION" != "$NEW_VERSION" ]; then
+            echo "Version changed from $LATEST_VERSION to $NEW_VERSION"
+          else
+            echo "::warning file=version.rb::Version remains unchanged"
+          fi

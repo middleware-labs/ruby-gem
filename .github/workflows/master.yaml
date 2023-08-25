@@ -38,6 +38,7 @@ jobs:
           if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
             echo "Version changed from $OLD_VERSION to $NEW_VERSION"
             echo "::set-output name=version_changed::true"
+            echo "::set-output name=version::$NEW_VERSION"
           else
             echo "Version remains unchanged"
             echo "::set-output name=version_changed::false"
@@ -62,7 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version_check.NEW_VERSION }}
-          release_name: Release ${{ steps.version_check.NEW_VERSION }}
+          tag_name: v${{ steps.version_check.outputs.version }}
+          release_name: Release ${{ steps.version_check.outputs.version }}
           draft: false
           prerelease: false

@@ -3,13 +3,13 @@
 require_relative "lib/middleware/ruby_gem/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "middleware_rubygem"
+  spec.name          = "middleware_apm"
   spec.version       = Middleware::RubyGem::VERSION
-  spec.authors       = ["parth-dadhaniya"]
-  spec.email         = ["parth@middleware.io"]
+  spec.authors       = ["middleware-dev"]
+  spec.email         = ["dev@middleware.io"]
 
-  spec.summary       = "Write a short summary, because RubyGems requires one."
-  spec.description   = "Write a longer description or delete this line."
+  spec.summary       = "APM is a practice and set of tools designed to monitor and manage the performance and availability of software applications. It involves tracking various metrics related to an application's behavior and performance, diagnosing issues, and optimizing its efficiency. APM tools aim to provide insights into an application's performance from end-users' perspective, as well as analyzing underlying infrastructure components."
+  spec.description   = "The 'APM' (Application Performance Monitoring) Ruby gem provides developers with comprehensive insights into their software applications' performance and behavior. By monitoring end-user experiences, profiling code execution, tracing transaction flows, and tracking resource utilization, the gem assists in identifying bottlenecks, errors, and areas for optimization. Real-time alerts, error analysis, and trend tracking contribute to maintaining a smooth user experience, enhancing application scalability, and ensuring efficient resource utilization."
   # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
   # spec.metadata["homepage_uri"] = spec.homepage
-  # spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
+  spec.metadata["source_code_uri"] = "https://github.com/middleware-labs/ruby-gem"
   # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
@@ -28,10 +28,4 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-
-  # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
-
-  # For more information and examples about making a new gem, checkout our
-  # guide at: https://bundler.io/guides/creating_gem.html
 end

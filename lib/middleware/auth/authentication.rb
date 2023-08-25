@@ -26,7 +26,7 @@ module Middleware
             return false
           end
 
-          url = URI("https://app.stage.env.middleware.io/api/v1/auth")
+          url = URI(ENV["MW_AUTH_URL"] || "https://app.middleware.io/api/v1/auth")
 
           https = Net::HTTP.new(url.host, url.port)
           https.use_ssl = true

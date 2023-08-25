@@ -32,7 +32,6 @@ jobs:
         id: version_check
         run: |
           # Extract the old and new versions from the commit
-#          LATEST_TAG=$(git describe --abbrev=0 --tags)
           OLD_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
 
@@ -46,7 +45,6 @@ jobs:
           fi
 
       - name: Publish Gem Package
-#        if: steps.version_check.outputs.version_changed == 'true'
         env:
           GEM_HOST_API_KEY: ${{ secrets.DP_RUBY_GEM_API_KEY }}
         run: |
@@ -58,7 +56,6 @@ jobs:
           gem push *.gem
 
       - name: Create Release
-#        if: steps.version_check.outputs.version_changed == 'true'
         id: create_release
         uses: actions/create-release@v1
         env:

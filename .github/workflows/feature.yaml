@@ -1,4 +1,4 @@
-name: Release Gem Package
+name: Build and Checks of Gem Package
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - '!master'
 
 jobs:
-  release_version:
+  build_and_checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +32,7 @@ jobs:
         id: version_check
         run: |
           # Get the latest version from the main branch
-          LATEST_VERSION=$(git show origin/main:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          LATEST_VERSION=$(git show origin/master:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           
           # Get the current version from the current commit
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')

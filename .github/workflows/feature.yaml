@@ -37,8 +37,8 @@ jobs:
           # Get the current version from the current commit
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           
-          OLD_VERSION=$(git show HEAD~1:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-          echo "Test: $OLD_VERSION"
+          OLD_VERSION=$(git show FETCH_HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          echo "Test: $OLD_VERSION" 
           
           if [ "$LATEST_VERSION" != "$NEW_VERSION" ]; then
             echo "Version changed from $LATEST_VERSION to $NEW_VERSION"

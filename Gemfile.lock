@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    middleware_apm (1.0.0)
+    middleware_apm (1.1.0)
 
 GEM
   remote: https://rubygems.org/

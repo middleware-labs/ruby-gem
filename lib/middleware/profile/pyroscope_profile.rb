@@ -15,7 +15,7 @@ module Middleware
           return unless authentication.auth
 
           Pyroscope.configure do |config|
-            config.application_name = "test.mw.app"
+            config.application_name = ENV["OTEL_SERVICE_NAME"] || "default-service-name"
             config.server_address = ENV["MW_PROFILING_SERVER_URL"] || "https://profiling.middleware.io"
             config.tenant_id = authentication.get_response['data']['account']
           end

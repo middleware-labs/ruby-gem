@@ -59,6 +59,7 @@ jobs:
         shell: bash
         run: |
           gem install bundler
+          bundle config build.json --platform=ruby
           bundle install
 
       - name: Build Gem Package

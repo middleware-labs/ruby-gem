@@ -53,16 +53,14 @@ jobs:
       - name: Set Up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 3.0.2
+          ruby-version: 3.0
 
       - name: Install Dependencies
-        shell: bash
         run: |
           gem install bundler
           bundle install
 
       - name: Build Gem Package
-        shell: bash
         run: |
           gem build middleware_rubygem.gemspec
 

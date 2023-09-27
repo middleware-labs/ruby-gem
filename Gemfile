@@ -14,6 +14,9 @@ gem "rubocop", "~> 1.7"
 gem 'opentelemetry-sdk'
 gem 'opentelemetry-exporter-otlp'
 gem 'opentelemetry-instrumentation-all'
-gem "pyroscope", "~> 0.5.10"
 gem "uri"
 gem "net"
+
+platforms :ruby do
+    gem "pyroscope", "~> 0.5.10"
+end

@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  release_version:
+  release_version_linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -57,3 +57,60 @@ jobs:
             Release ${{ steps.get_new_version.outputs.version }}
           draft: false
           prerelease: false
+  
+  release_version_windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build Gem Package
+        shell: bash
+        run: |
+          gem build middleware_rubygem.gemspec
+
+      - name: Get the new Version
+        id: get_new_version
+        shell: bash
+        run: |
+          # Extract the new version from the commit
+          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          echo "::set-output name=version::$NEW_VERSION"
+
+      - name: Publish Gem Package
+        shell: bash
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+          gem build *.gemspec
+          gem push *.gem
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_new_version.outputs.version }}
+          release_name: Release ${{ steps.get_new_version.outputs.version }}
+          body: |
+            Release ${{ steps.get_new_version.outputs.version }}
+          draft: false
+          prerelease: false
+

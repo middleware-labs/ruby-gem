@@ -57,8 +57,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          gem install json
+          bundle update json
           bundle update
-          bundle install
+          bundle install --verbose
 
       - name: Build Gem Package
         run: |

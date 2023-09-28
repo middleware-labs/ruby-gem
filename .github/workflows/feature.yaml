@@ -57,9 +57,19 @@ jobs:
       
       - name: Install MSYS2
         run: |
-          choco install msys2 --version=2021.10.25 -y
-          RefreshEnv
+          # Download MSYS2 installer
+          Invoke-WebRequest -Uri "https://repo.msys2.org/distrib/x86_64/msys2-x86_64-latest.exe" -OutFile msys2-installer.exe
+          
+          # Run the installer silently
+          Start-Process -Wait -FilePath .\msys2-installer.exe -ArgumentList "/S /D=C:\msys64"
+          
+          # Add MSYS2 to PATH
+          $env:PATH += ";C:\msys64\usr\bin"
+          
+          # Update MSYS2 packages
           msys2.exe pacman -Syu --noconfirm
+          
+          # Install required packages
           msys2.exe pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake -y
           msys2.exe pacman -S mingw-w64-x86_64-libffi -y
           msys2.exe pacman -S mingw-w64-x86_64-openssl -y

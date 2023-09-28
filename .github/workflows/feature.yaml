@@ -55,30 +55,11 @@ jobs:
         with:
           ruby-version: 3.0
       
-      - name: Install MSYS2
-        run: |
-          #Chocolaty install MSYS2
-          choco install msys2
-          
-          # Add MSYS2 to PATH
-          $env:PATH += ";C:\tools\msys64"
-          
-          # Update MSYS2 packages
-          msys2 pacman -Syu --noconfirm
-          
-          # Install required packages
-          msys2 pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake -Y
-          msys2 pacman -S mingw-w64-x86_64-libffi -Y
-          msys2 pacman -S mingw-w64-x86_64-openssl -Y
-          msys2 pacman -S mingw-w64-x86_64-zlib -Y
-        shell: powershell
 
       - name: Install Dependencies
         run: |
-          gem install json
-          bundle update json
-          bundle update
-          bundle install --verbose
+          gem install bundler
+          bundle install
 
       - name: Build Gem Package
         run: |

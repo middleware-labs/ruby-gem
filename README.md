@@ -52,7 +52,7 @@
   | OTEL_EXPORTER_OTLP_ENDPOINT | http://localhost:9320            | Yes                                    | Endpoint to send the collected data. |
   | OTEL_SERVICE_NAME           | Demo Service Name                | No                                     | Your Service Name.                   |
   | OTEL_RESOURCE_ATTRIBUTES    | project.name="Demo Project Name" | No                                     | Your Project Name.                   |
-  | MW_API_KEY                  | {Your API Key}                   | If Linux then Yes / If windows then no | It is used for profiling.            |
+  | MW_API_KEY                  | {Your API Key}                   | If Linux then Yes / If windows then No | It is used for profiling.            |
 
 
 - Run your  application 

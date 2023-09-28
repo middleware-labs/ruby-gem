@@ -54,6 +54,17 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.0
+      
+      - name: Install MSYS2
+        run: |
+          choco install msys2 --version=2021.10.25 -y
+          RefreshEnv
+          msys2.exe pacman -Syu --noconfirm
+          msys2.exe pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake -y
+          msys2.exe pacman -S mingw-w64-x86_64-libffi -y
+          msys2.exe pacman -S mingw-w64-x86_64-openssl -y
+          msys2.exe pacman -S mingw-w64-x86_64-zlib -y
+        shell: powershell
 
       - name: Install Dependencies
         run: |

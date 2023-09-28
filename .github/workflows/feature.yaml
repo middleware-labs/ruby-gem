@@ -8,8 +8,8 @@ on:
 
 jobs:
   build_and_checks_for_linux:
+    name: Build for Linux Environment
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -28,24 +28,9 @@ jobs:
         run: |
           gem build middleware_rubygem.gemspec
 
-      - name: Check for Version Change
-        id: version_check
-        run: |
-          # Get the latest version from the main branch
-          LATEST_VERSION=$(git fetch origin master && git show origin/master:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-          
-          # Get the current version from the current commit
-          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-          
-          if [ "$LATEST_VERSION" != "$NEW_VERSION" ]; then
-            echo "Version changed from $LATEST_VERSION to $NEW_VERSION"
-          else
-            echo "::warning file=version.rb::Version remains unchanged"
-          fi
-  
-  build_and_checks_windows:
+  build_and_checks_for_windows:
+    name: Build for Windows Environment
     runs-on: windows-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -55,7 +40,6 @@ jobs:
         with:
           ruby-version: 3.0
       
-
       - name: Install Dependencies
         run: |
           gem install bundler
@@ -65,8 +49,14 @@ jobs:
         run: |
           gem build middleware_rubygem.gemspec
 
+  check-version-change:
+    name: Check for Version Change
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_checks_for_linux
+      - build_and_checks_for_windows
+    steps:
       - name: Check for Version Change
-        shell: bash
         id: version_check
         run: |
           # Get the latest version from the main branch

@@ -56,6 +56,9 @@ jobs:
       - build_and_checks_for_linux
       - build_and_checks_for_windows
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
       - name: Check for Version Change
         id: version_check
         run: |

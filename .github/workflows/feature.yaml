@@ -61,16 +61,16 @@ jobs:
           choco install msys2
           
           # Add MSYS2 to PATH
-          $env:PATH += ";C:\msys64\usr\bin"
+          $env:PATH += ";C:\tools\msys64"
           
           # Update MSYS2 packages
-          msys2.exe pacman -Syu --noconfirm
+          msys2 pacman -Syu --noconfirm
           
           # Install required packages
-          msys2.exe pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake -y
-          msys2.exe pacman -S mingw-w64-x86_64-libffi -y
-          msys2.exe pacman -S mingw-w64-x86_64-openssl -y
-          msys2.exe pacman -S mingw-w64-x86_64-zlib -y
+          msys2 pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake -Y
+          msys2 pacman -S mingw-w64-x86_64-libffi -Y
+          msys2 pacman -S mingw-w64-x86_64-openssl -Y
+          msys2 pacman -S mingw-w64-x86_64-zlib -Y
         shell: powershell
 
       - name: Install Dependencies

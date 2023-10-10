@@ -2,8 +2,29 @@
 
 require_relative "lib/middleware/ruby_gem/version"
 
+excluded_files = []
+os = ""
+
+if RUBY_PLATFORM =~ /mswin|mingw/
+    excluded_files.push(
+        'lib/middleware/auth/',
+        'lib/middleware/profile/',
+        'lib/middleware/ruby_gem_linux.rb',
+        'middleware_rubygem_linux.gemspec'
+    )
+    os = "windows"
+elsif RUBY_PLATFORM =~ /linux/
+    excluded_files.push(
+        'lib/middleware/ruby_gem_windows.rb',
+        'middleware_rubygem_windows.gemspec'
+    )
+    os = "linux"
+else 
+    raise "$#{RUBY_PLATFORM} is not supported"
+end
+
 Gem::Specification.new do |spec|
-  spec.name          = "middleware_apm"
+  spec.name          = "middleware_apm_" + os
   spec.version       = Middleware::RubyGem::VERSION
   spec.authors       = ["middleware-dev"]
   spec.email         = ["dev@middleware.io"]
@@ -23,7 +44,9 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
+    `git ls-files -z`.split("\x0").reject do |f|
+        f.match(%r{\A(?:test|spec|features)/}) || excluded_files.any? { |excluded| f.include?(excluded) }
+    end
   end
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }

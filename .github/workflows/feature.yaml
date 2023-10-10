@@ -7,9 +7,9 @@ on:
       - '!master'
 
 jobs:
-  build_and_checks:
+  build_and_checks_for_linux:
+    name: Build for Linux Environment
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -28,6 +28,37 @@ jobs:
         run: |
           gem build middleware_rubygem.gemspec
 
+  build_and_checks_for_windows:
+    name: Build for Windows Environment
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+      
+      - name: Install Dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build Gem Package
+        run: |
+          gem build middleware_rubygem.gemspec
+
+  check-version-change:
+    name: Check for Version Change
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_checks_for_linux
+      - build_and_checks_for_windows
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
       - name: Check for Version Change
         id: version_check
         run: |

@@ -6,9 +6,9 @@ on:
       - master
 
 jobs:
-  release_version:
+  release_gem_linux:
+    name: Release Gem for Linux
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -27,13 +27,6 @@ jobs:
         run: |
           gem build middleware_rubygem.gemspec
 
-      - name: Get the new Version
-        id: get_new_version
-        run: |
-          # Extract the new version from the commit
-          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
-          echo "::set-output name=version::$NEW_VERSION"
-
       - name: Publish Gem Package
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
@@ -44,6 +37,60 @@ jobs:
           printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
           gem build *.gemspec
           gem push *.gem
+
+  release_gem_windows:
+    name: Release Gem for Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build Gem Package
+        shell: bash
+        run: |
+          gem build middleware_rubygem.gemspec
+
+      - name: Publish Gem Package
+        shell: bash
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+          gem build *.gemspec
+          gem push *.gem
+
+  create_release:
+    name: Release the latest release
+    runs-on: ubuntu-latest
+    needs:
+      - release_gem_linux
+      - release_gem_windows
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Get the new Version
+        id: get_new_version
+        shell: bash
+        run: |
+          # Extract the new version from the commit
+          NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
+          echo "::set-output name=version::$NEW_VERSION"
 
       - name: Create Release
         id: create_release

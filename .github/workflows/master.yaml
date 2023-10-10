@@ -55,6 +55,7 @@ jobs:
       - name: Install Dependencies
         run: |
           gem install bundler
+          gem install 'bigdecimal'
           bundle install
 
       - name: Build Gem Package

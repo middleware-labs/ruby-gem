@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - master-worlflow-update
 
 jobs:
   release_gem_linux:
@@ -37,7 +36,7 @@ jobs:
           chmod 0600 $HOME/.gem/credentials
           printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
           gem build *.gemspec
-#          gem push *.gem
+          gem push *.gem
 
   release_gem_windows:
     name: Release Gem for Windows
@@ -53,12 +52,14 @@ jobs:
           ruby-version: 3.0
 
       - name: Install Dependencies
+        shell: bash 
         run: |
           gem install bundler
           gem install 'bigdecimal'
           bundle install
 
       - name: Build Gem Package
+        shell: bash
         run: |
           gem build middleware_rubygem.gemspec
 
@@ -72,7 +73,7 @@ jobs:
           chmod 0600 $HOME/.gem/credentials
           printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
           gem build *.gemspec
-#          gem push *.gem
+          gem push *.gem
 
   create_release:
     name: Release the latest release
@@ -92,15 +93,15 @@ jobs:
           NEW_VERSION=$(git show HEAD:lib/middleware/ruby_gem/version.rb | grep 'VERSION =' | awk '{print $3}' | tr -d '"')
           echo "::set-output name=version::$NEW_VERSION"
 
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: v${{ steps.get_new_version.outputs.version }}
-#          release_name: Release ${{ steps.get_new_version.outputs.version }}
-#          body: |
-#            Release ${{ steps.get_new_version.outputs.version }}
-#          draft: false
-#          prerelease: false
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_new_version.outputs.version }}
+          release_name: Release ${{ steps.get_new_version.outputs.version }}
+          body: |
+            Release ${{ steps.get_new_version.outputs.version }}
+          draft: false
+          prerelease: false

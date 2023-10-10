@@ -52,10 +52,9 @@ jobs:
           ruby-version: 3.0
 
       - name: Install Dependencies
-        shell: bash 
+        shell: bash
         run: |
           gem install bundler
-          gem install 'bigdecimal'
           bundle install
 
       - name: Build Gem Package

@@ -12,7 +12,6 @@ gem 'opentelemetry-sdk'
 gem 'opentelemetry-exporter-otlp'
 gem 'opentelemetry-instrumentation-all'
 
-
 platforms :ruby do
     gem "uri"
     gem "net"

@@ -11,6 +11,7 @@ gem "minitest", "~> 5.0"
 gem 'opentelemetry-sdk'
 gem 'opentelemetry-exporter-otlp'
 gem 'opentelemetry-instrumentation-all'
+gem 'opentelemetry-propagator-b3'
 
 platforms :ruby do
     gem "uri"

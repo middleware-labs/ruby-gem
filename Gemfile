@@ -17,5 +17,5 @@ platforms :ruby do
     gem "uri"
     gem "net"
     gem "rubocop", "~> 1.7"
-    gem "pyroscope", "~> 0.5.10"
+    gem "pyroscope", "~> 0.5.12"
 end

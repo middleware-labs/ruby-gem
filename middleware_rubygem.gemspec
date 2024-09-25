@@ -34,6 +34,11 @@ Gem::Specification.new do |spec|
   # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
+  spec.add_dependency 'opentelemetry-sdk', '~> 1.5'
+  spec.add_dependency 'opentelemetry-exporter-otlp', '~> 0.29.0'
+  spec.add_dependency 'opentelemetry-instrumentation-all', '~> 0.65.0'
+  spec.add_dependency 'opentelemetry-propagator-b3', '~> 0.21.0'
+  spec.add_dependency 'pyroscope', '~> 0.5.12'
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
